@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Recuperaciones - Apuntes de Historia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="images/logox.png" type="image/png">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background-color: #e9f1f9;
+    }
+
+    header {
+      background-color: #2c3e50;
+      padding: 30px 20px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    header img {
+      height: 110px;
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      height: 90px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+      text-shadow: 1px 1px 4px black;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      font-size: 1.2em;
+      text-align: center;
+    }
+
+    .main-wrapper {
+      padding: 60px 0;
+      background: linear-gradient(135deg, #e9f1f9, #dce7f2);
+      background-image: url("images/fondo-personalizado.jpg");
+      /* cambia la ruta según tu carpeta */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      background-color: #fcfcfc;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    h2 {
+      color: #1f3a60;
+    }
+
+    .tema {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 20px;
+    }
+
+    .tema h3 {
+      color: #2c3e50;
+      margin: 0 0 10px;
+    }
+
+    .tema p {
+      margin: 5px 0;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+details ul li a {
+      display: block;
+      padding: 8px 10px;
+      margin: 4px 0;
+      border-radius: 6px;
+      background-color: #e7eff7;
+      color: #1f3a60;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    details ul li a:hover {
+      background-color: #cbdff3;
+      padding-left: 16px;
+      color: #295d8d;
+    }
+
+
+  .header-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      text-align: center;
+    }
+
+    .titulo-centro {
+      grid-column: 2;
+    }
+
+    .titulo-centro h1 {
+      margin: 0;
+      font-size: 2.5em;
+      text-shadow: 1px 1px 4px black;
+    }
+
+    .titulo-centro p {
+      margin: 5px 0 0;
+      font-size: 1.2em;
+    }
+
+    #buscador {
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      background-color: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      max-width: 100%;
+      color: #2c3e50;
+      font-family: 'Poppins', sans-serif;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+   <a href="index.html"><img src="images/logo.png" style="height: 140px; max-height: 140px; vertical-align: middle;"
+        alt="Logo Apuntes de Historia"></a>
+    <div class="header-grid">
+      <div class="titulo-centro">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 3em; margin-bottom: 10px;">
+          Apuntes de Historia</h1>
+        <p>Aprende historia y geografía con recursos visuales e interactivos</p>
+      </div>
+      <div id="buscador-right">
+        <input type="text" id="buscador" placeholder="Buscar contenido..." onkeyup="filtrarContenido()">
+        <p id="no-resultados"
+          style="display: none; color: #ffffff; font-size: 1.2em; text-align: center; margin-top: 10px;">
+          No hay resultados
+        </p>
+      </div>
+    </div>
+    <script>
+      fetch('partials/header.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('header-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading header:', error));
+    </script>
+    <script>
+      function filtrarContenido() {
+        const input = document.getElementById("buscador");
+        const filtro = input.value.toLowerCase();
+        const entradas = document.getElementsByClassName("tema");
+        const mensajeNoResultados = document.getElementById("no-resultados");
+
+        let hayResultados = false;
+
+        for (let i = 0; i < entradas.length; i++) {
+          const texto = entradas[i].textContent || entradas[i].innerText;
+          if (texto.toLowerCase().indexOf(filtro) > -1) {
+            entradas[i].style.display = "";
+            hayResultados = true;
+          } else {
+            entradas[i].style.display = "none";
+          }
+        }
+        mensajeNoResultados.style.display = hayResultados ? "none" : "block";
+      }
+    </script>
+  </header>
+
+   <details open
+    style="position: absolute; z-index: 5; left: 0; top: 150px; width: 240px; background-color: #f2f6f9; padding: 15px; border-radius: 0 10px 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif;">
+    <summary style="font-weight: bold; font-size: 1.1em; cursor: pointer;">📘 Cursos</summary>
+    <ul style="list-style: none; padding-left: 10px;">
+      <li><a href="1eso.html">📗 1º ESO</a></li>
+      <li><a href="2eso.html">📘 2º ESO</a></li>
+      <li><a href="3eso.html">📙 3º ESO</a></li>
+      <li><a href="4eso.html">📕 4º ESO</a></li>
+      <li><a href="hmc.html">🏛 HMC</a></li>
+      <li><a href="he.html">📜 HE</a></li>
+      <li><a href="geo.html">🌍 GEO </a></li>
+      <li><a href="tutoria.html">✏️ Tutoría </a></li>
+      <li><a href="recuperaciones.html">📄 Recuperaciones </a></li>
+    </ul>
+  </details>
+  
+  <details open
+    style="position: absolute; right: 0; top: 150px; width: 240px; background-color: #f2f6f9; padding: 15px; border-radius: 10px 0 0 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; z-index: 5;">
+    <summary style="font-weight: bold; font-size: 1.1em; cursor: pointer;">📚 Temas Populares</summary>
+    <ul style="list-style: none; padding-left: 10px;">
+      <style>
+        details[right] ul li a {
+          color: #f0f0f0;
+        }
+      </style>
+      <li><a href="egipcia.html">🏺 Civilización Egipcia</a></li>
+      <li><a href="feudalismo.html">🛡️ Feudalismo</a></li>
+      <li><a href="revolucion.html">⚔️ Revolución Francesa</a></li>
+      <li><a href="guerramundial.html">🌍 Primera Guerra Mundial</a></li>
+    </ul>
+  </details>
+
+  <div class="main-wrapper">
+    <main>
+      <h2>Recuperaciones</h2>
+
+      <div class="tema">
+        <p>por autopackswe</p>
+      </div>
+
+      <div class="tema">
+        <h3>1ESO</h3>
+        <p>Plan de Recuperación Geografía e Historia 1 EVALUACIÓN</p>
+      </div>
+
+      <div class="tema">
+        <h3>2ESO</h3>
+        <p>Plan de Recuperación Geografía e Historia 1 EVALUACIÓN (1)</p>
+      </div>
+
+
+    </main>
+  </div>
+
+  <footer>
+    <div>
+      <a href="https://facebook.com">📘 Facebook</a>
+      <a href="https://instagram.com">📸 Instagram</a>
+      <a href="https://twitter.com">🐦 Twitter</a>
+    </div>
+    <p>&copy; 2025 Apuntes de Historia. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+
+</html>

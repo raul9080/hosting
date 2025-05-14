@@ -1,0 +1,91 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('global-search');
+        const searchResults = document.getElementById('search-results');
+
+        const searchIndex = [];
+
+        function generateSearchIndex() {
+            document.querySelectorAll('.tema').forEach(tema => {
+                searchIndex.push({
+                    id: tema.id || 'tema-' + Math.random().toString(36).substr(2, 9),
+                    title: tema.querySelector('h3')?.textContent || '',
+                    content: tema.textContent,
+                    url: window.location.pathname,
+                    element: tema
+                });
+            });
+        }
+
+        searchInput.addEventListener('input', function () {
+            const term = this.value.trim().toLowerCase();
+            searchResults.innerHTML = '';
+
+            if (term.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const results = searchIndex.filter(item =>
+                item.title.toLowerCase().includes(term) ||
+                item.content.toLowerCase().includes(term)
+            );
+
+            if (results.length > 0) {
+                results.forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.style.padding = '10px';
+                    resultItem.style.borderBottom = '1px solid #eee';
+                    resultItem.style.cursor = 'pointer';
+                    resultItem.innerHTML = `
+            <h4 style="margin: 0; color: #2c3e50;">${result.title}</h4>
+            <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">
+              ${result.content.substring(0, 100)}...
+            </p>
+            <small style="color: #999;">${result.url.replace('.html', '')}</small>
+          `;
+
+                    resultItem.addEventListener('click', function () {
+
+                        if (window.location.pathname === result.url) {
+                            result.element.scrollIntoView({ behavior: 'smooth' });
+                            highlightText(result.element, term);
+                        } else {
+                            window.location.href = result.url + '?search=' + encodeURIComponent(term);
+                        }
+                        searchResults.style.display = 'none';
+                    });
+
+                    searchResults.appendChild(resultItem);
+                });
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.innerHTML = '<div style="padding: 15px; text-align: center; color: #666;">No se encontraron resultados</div>';
+                searchResults.style.display = 'block';
+            }
+        });
+
+        function highlightText(element, term) {
+            const html = element.innerHTML;
+            const regex = new RegExp(term, 'gi');
+            element.innerHTML = html.replace(regex, match =>
+                `<span style="background-color: yellow; padding: 2px;">${match}</span>`
+            );
+        }
+
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.search-container')) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        generateSearchIndex();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchParam = urlParams.get('search');
+        if (searchParam) {
+            searchInput.value = searchParam;
+            searchInput.dispatchEvent(new Event('input'));
+        }
+    });
+</script>
